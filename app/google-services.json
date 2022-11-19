@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "736764296562",
+    "project_id": "ubc-alert",
+    "storage_bucket": "ubc-alert.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736764296562:android:d7d2c502a00705eff171eb",
+        "android_client_info": {
+          "package_name": "com.example.ubcalert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736764296562-0d8dun743fbk2v81r4v521i0pam79lpu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSF2HIo5ENf-mItlY7yQE4qKs_l1uNRnU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736764296562-0d8dun743fbk2v81r4v521i0pam79lpu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
