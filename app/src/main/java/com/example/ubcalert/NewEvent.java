@@ -24,7 +24,7 @@ public class NewEvent extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_event3);
+        setContentView(R.layout.activity_new_event);
         spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default
         // spinner layout
@@ -47,10 +47,10 @@ public class NewEvent extends AppCompatActivity {
     }
     public void onClickStart(View view){
 
-        if(!title.matches("") && !desc.matches("") && !(loc.matches(""))){
-            Intent intent=new Intent(this,ExistingEvents.class);
+       if(!title.matches("") && !desc.matches("") && !(loc.matches(""))){
+           Intent intent=new Intent(this,ExistingEvents.class);
             Bundle bundle =new Bundle();
-            bundle.putString("title",title);
+           bundle.putString("title",title);
             bundle.putString("desc",desc);
             bundle.putString("loc",loc);
             bundle.putString("cat",cat);

@@ -19,6 +19,14 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="PROVIDE YOUR OWN KEY TO RUN THIS" />
+
+        <activity
+            android:name=".PinsMapView"
+            android:exported="false"
+            android:label="@string/title_activity_pins_map_view" />
         <activity
             android:name=".MainActivity"
             android:exported="true" >
