@@ -8,7 +8,9 @@ import java.io.Serializable;
 
 @SuppressWarnings("unused")
 public class Event implements Serializable {
-    private String title, location;
+    private String title;
+    private String location;
+    private String username;
     private double lat, lng;
     private int numUpvotes, numDownvotes;
     private LocalDateTime timeCreated;
@@ -17,14 +19,18 @@ public class Event implements Serializable {
     // DO NOT DELETE. USED TO APPEASE THE FIREBASE OVERLORDS
     public Event() {}
 
-    public Event(String title, String location, double lat, double lng, LocalDateTime localDateTime) {
+    public Event(String title, String location, String username, double lat, double lng, LocalDateTime localDateTime) {
         this.title = title;
         this.location = location;
+        this.username = username;
         this.lat = lat;
         this.lng = lng;
         this.timeCreated = localDateTime;
         this.uuid = MyUUID.randomUUID();
     }
+    public String getUsername() {return username; }
+
+    public void setUsername(String username) {this.username = username; }
 
     public String getTitle() {
         return title;
@@ -123,6 +129,7 @@ public class Event implements Serializable {
         return "Event{" +
                 "title='" + title + '\'' +
                 ", location='" + location + '\'' +
+                ", username =" + username +
                 ", lat=" + lat +
                 ", lng=" + lng +
                 ", numUpvotes=" + numUpvotes +

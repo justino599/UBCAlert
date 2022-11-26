@@ -34,11 +34,14 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
     private String searchText = "";
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        username = intent.getStringExtra("theusername");
 
         // Get views
         Button reportButton = findViewById(R.id.reportButton);
@@ -75,9 +78,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Loads in default events if the database has nothing in it **/
     private void loadDefaultData() {
         eventList = new ArrayList<>();
-        eventList.add(new Event("Tims is closed", "Tims", 49.939857, -119.395875, LocalDateTime.now()));
-        eventList.add(new Event("Food truck", "UNC", 49.940821, -119.395912, LocalDateTime.now()));
-        eventList.add(new Event("Car break in", "Academy", 49.933968, -119.401920, LocalDateTime.now()));
+        eventList.add(new Event("Tims is closed", "Tims", "jade", 49.939857, -119.395875, LocalDateTime.now()));
+        eventList.add(new Event("Food truck", "UNC", "jade", 49.940821, -119.395912, LocalDateTime.now()));
+        eventList.add(new Event("Car break in", "Academy","just", 49.933968, -119.401920, LocalDateTime.now()));
         saveData();
         Log.i("LOADED DEFAULT DATA","LOADED DEFAULT DATA");
     }
@@ -85,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Set the adapter of the recyclerView **/
     private void setAdapter() {
         ArrayList<Event> filtered = getFilteredEventList();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), filtered);
         eventAdapter.setEventClickListener(this);
@@ -148,6 +150,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
             // Determine which item was clicked and open the corresponding activity
             if (item.getTitle().equals("My Reports")) {
                 makeSnackbar("My Reports");
+                Intent intentional2 = new Intent(MainActivity.this,My_Reports.class);
+                intentional2.putExtra("theusername", this.username);
+                startActivity(intentional2);
             } else if (item.getTitle().equals("Preferences")) {
                 makeSnackbar("Preferences");
             } else if (item.getTitle().equals("Event Analytics")) {

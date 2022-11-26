@@ -19,12 +19,13 @@ public class login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         buttonbutton = (Button) findViewById(R.id.button);
-        etuno = (EditText) findViewById(R.id.editTextTextPassword);
+        etuno = (EditText) findViewById(R.id.editTextTextPersonName);
 
         buttonbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 useruser = etuno.getText().toString();
                 Intent intentional = new Intent(login.this,MainActivity.class);
+                intentional.putExtra("theusername", useruser);
                 startActivity(intentional);
             }
 
