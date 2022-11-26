@@ -20,4 +20,5 @@
         <item>4</item>
         <item>5 (Dangerous)</item>
     </string-array>
+    <string name="title_activity_pins_map_view">PinsMapView</string>
 </resources>
