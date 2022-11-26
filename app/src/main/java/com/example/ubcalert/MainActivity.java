@@ -207,13 +207,12 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         alert.setPositiveButton("Yes", (dialog, which) -> {
             event.upvote();
             saveData();
-            System.out.println(eventList);
+            setAdapter();
         });
         alert.setNegativeButton("No", (dialog, which) -> {
             event.downvote();
             saveData();
             setAdapter();
-            System.out.println(eventList);
         });
         alert.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
         alert.show();
