@@ -47,20 +47,20 @@ public class NewEvent extends AppCompatActivity {
     }
     public void onClickStart(View view){
 
-       if(!title.matches("") && !desc.matches("") && !(loc.matches(""))){
-           Intent intent=new Intent(this,ExistingEvents.class);
-            Bundle bundle =new Bundle();
-           bundle.putString("title",title);
-            bundle.putString("desc",desc);
-            bundle.putString("loc",loc);
-            bundle.putString("cat",cat);
-
-            intent.putExtras(bundle);
-            startActivity(intent);
-        }
-        else{
-
-        }
+//       if(!title.matches("") && !desc.matches("") && !(loc.matches(""))){
+//           Intent intent=new Intent(this,ExistingEvents.class);
+//            Bundle bundle =new Bundle();
+//           bundle.putString("title",title);
+//            bundle.putString("desc",desc);
+//            bundle.putString("loc",loc);
+//            bundle.putString("cat",cat);
+//
+//            intent.putExtras(bundle);
+//            startActivity(intent);
+//        }
+//        else{
+//
+//        }
     }
 
 }
