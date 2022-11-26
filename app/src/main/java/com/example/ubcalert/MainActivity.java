@@ -180,11 +180,19 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Called when the "New Report" button is clicked **/
     public void newReport(View v) {
         makeSnackbar("New Report created");
+        Intent intent=new Intent(this, NewEvent.class);
+
+
+        startActivity(intent);
+
     }
 
     /** Called when the "Open Map View" button is clicked **/
     public void openMapView(View v) {
         makeSnackbar("Map View opened");
+        Intent intent = new Intent(this, PinsMapView.class);
+        intent.putExtra("eventList", eventList);
+        startActivity(intent);
     }
 
     @Override
@@ -212,13 +220,12 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         alert.setPositiveButton("Yes", (dialog, which) -> {
             event.upvote();
             saveData();
-            System.out.println(eventList);
+            setAdapter();
         });
         alert.setNegativeButton("No", (dialog, which) -> {
             event.downvote();
             saveData();
             setAdapter();
-            System.out.println(eventList);
         });
         alert.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
         alert.show();
