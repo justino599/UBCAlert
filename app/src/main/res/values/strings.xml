@@ -2,4 +2,5 @@
     <string name="app_name">UBC Alert</string>
     <string name="report_button">New Report</string>
     <string name="open_map">Open Map View</string>
+    <string name="title_activity_pins_map_view">PinsMapView</string>
 </resources>

@@ -180,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Called when the "Open Map View" button is clicked **/
     public void openMapView(View v) {
         makeSnackbar("Map View opened");
+        Intent intent = new Intent(this, PinsMapView.class);
+        intent.putExtra("eventList", eventList);
+        startActivity(intent);
     }
 
     @Override
