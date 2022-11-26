@@ -1,6 +1,7 @@
 package com.example.ubcalert;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,32 +12,27 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 import com.skydoves.powermenu.MenuAnimation;
 import com.skydoves.powermenu.PowerMenu;
 import com.skydoves.powermenu.PowerMenuItem;
 
 import org.threeten.bp.LocalDateTime;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements EventClickListener {
     private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
-    private DatabaseReference eventDataRef;
     private String searchText = "";
 
     @Override
@@ -69,34 +65,11 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         openMapButton.setOnClickListener(this::openMapView);
         menuButton.setOnClickListener(this::openMenu);
 
-        // Get reference to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        eventDataRef = database.getReference("eventList");
+        // Load data from file
+        loadData();
 
-        // Read from the database
-        eventDataRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once on activity launch and again whenever data at this location is updated.
-                try {
-                    eventList = dataSnapshot.getValue(new GenericTypeIndicator<ArrayList<Event>>() {
-                    });
-                    assert eventList != null;
-                } catch (Exception | AssertionError e) {
-                    e.printStackTrace();
-                    loadDefaultData();
-                }
-                setAdapter();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Failed to read value
-                loadDefaultData();
-                System.out.println("Failed to read value.");
-                setAdapter();
-            }
-        });
+        // Update RecyclerView
+        setAdapter();
     }
 
     /** Loads in default events if the database has nothing in it **/
@@ -105,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         eventList.add(new Event("Tims is closed", "Tims", 49.939857, -119.395875, LocalDateTime.now()));
         eventList.add(new Event("Food truck", "UNC", 49.940821, -119.395912, LocalDateTime.now()));
         eventList.add(new Event("Car break in", "Academy", 49.933968, -119.401920, LocalDateTime.now()));
-        eventDataRef.setValue(eventList);
+        saveData();
         Log.i("LOADED DEFAULT DATA","LOADED DEFAULT DATA");
     }
 
@@ -117,6 +90,22 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), filtered);
         eventAdapter.setEventClickListener(this);
         recyclerView.setAdapter(eventAdapter);
+    }
+
+    private void loadData() {
+        try (ObjectInputStream in = new ObjectInputStream(openFileInput("eventList.dat"))) {
+            eventList = (ArrayList<Event>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            loadDefaultData();
+        }
+    }
+
+    private void saveData() {
+        try (ObjectOutputStream out = new ObjectOutputStream(openFileOutput("eventList.dat", MODE_PRIVATE))) {
+            out.writeObject(eventList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private ArrayList<Event> getFilteredEventList() {
@@ -197,6 +186,14 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     public void onShareClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
         Event event = findEvent(eventUUID);
         makeSnackbar("Share button clicked on \"" + (event != null ? event.getTitle() : null) + "\"");
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, event.getTitle() + " at " + event.getLocation());
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
     }
 
     @Override
@@ -209,17 +206,16 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         alert.setMessage("Is \"" + event.getTitle() + "\" is happening?");
         alert.setPositiveButton("Yes", (dialog, which) -> {
             event.upvote();
-            eventDataRef.setValue(eventList);
+            saveData();
             System.out.println(eventList);
         });
         alert.setNegativeButton("No", (dialog, which) -> {
             event.downvote();
-            eventDataRef.setValue(eventList);
+            saveData();
+            setAdapter();
             System.out.println(eventList);
         });
         alert.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
         alert.show();
-
-
     }
 }
