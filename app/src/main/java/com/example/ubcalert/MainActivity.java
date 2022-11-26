@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,11 +30,13 @@ import com.skydoves.powermenu.PowerMenuItem;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements EventClickListener {
     private ArrayList<Event> eventList;
     private RecyclerView recyclerView;
     private DatabaseReference eventDataRef;
+    private String searchText = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,20 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         Button openMapButton = findViewById(R.id.openMapButton);
         ImageButton menuButton = findViewById(R.id.menuButton);
         recyclerView = findViewById(R.id.recyclerView);
+        SearchView searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchText = newText;
+                setAdapter();
+                return true;
+            }
+        });
 
         // Set OnClickListeners of buttons
         reportButton.setOnClickListener(this::newReport);
@@ -93,10 +110,26 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
 
     /** Set the adapter of the recyclerView **/
     private void setAdapter() {
+        ArrayList<Event> filtered = getFilteredEventList();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), eventList);
+        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), filtered);
         eventAdapter.setEventClickListener(this);
         recyclerView.setAdapter(eventAdapter);
+    }
+
+    private ArrayList<Event> getFilteredEventList() {
+        ArrayList<Event> out = new ArrayList<>();
+
+        for (Event event : eventList) {
+            if (!searchText.equals("") && !event.getTitle().toLowerCase(Locale.ROOT).contains(searchText.toLowerCase(Locale.ROOT)) && !event.getLocation().toLowerCase(Locale.ROOT).contains(searchText.toLowerCase(Locale.ROOT))) {
+                continue;
+            }
+
+            out.add(event);
+        }
+
+        return out;
     }
 
     /** Called when the hamburger menu is clicked
