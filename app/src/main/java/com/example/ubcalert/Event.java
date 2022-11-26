@@ -12,6 +12,7 @@ public class Event implements Serializable {
     private double lat, lng;
     private int numUpvotes, numDownvotes;
     private LocalDateTime timeCreated;
+    private MyUUID uuid;
 
     // DO NOT DELETE. USED TO APPEASE THE FIREBASE OVERLORDS
     public Event() {}
@@ -22,6 +23,7 @@ public class Event implements Serializable {
         this.lat = lat;
         this.lng = lng;
         this.timeCreated = localDateTime;
+        this.uuid = MyUUID.randomUUID();
     }
 
     public String getTitle() {
@@ -72,6 +74,18 @@ public class Event implements Serializable {
         this.numDownvotes = numDownvotes;
     }
 
+    public MyUUID getUuid() {
+        return uuid;
+    }
+
+    public void upvote() {
+        numUpvotes++;
+    }
+
+    public void downvote() {
+        numDownvotes++;
+    }
+
     /////////////////////////////////////////////////////////////////
     // timeCreated getter/setter to appease the firebase overlords //
     /////////////////////////////////////////////////////////////////
@@ -92,5 +106,29 @@ public class Event implements Serializable {
 
     public LocalDateTime timeCreatedGetter() {
         return timeCreated;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        return uuid != null ? uuid.equals(event.uuid) : event.uuid == null;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "title='" + title + '\'' +
+                ", location='" + location + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", numUpvotes=" + numUpvotes +
+                ", numDownvotes=" + numDownvotes +
+                ", timeCreated=" + timeCreated +
+                ", uuid=" + uuid +
+                '}';
     }
 }

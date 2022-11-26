@@ -35,6 +35,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.title.setText(event.getTitle());
         holder.location.setText(String.format("Location: %s",event.getLocation()));
         holder.time.setText(String.format("Time: %s", DateTimeFormatter.ofPattern("hh:mm a EEE MMM dd, yyyy").format(event.timeCreatedGetter())));
+        holder.uuid = eventList.get(position).getUuid();
 
     }
 
@@ -50,6 +51,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     public class EventViewHolder extends RecyclerView.ViewHolder {
         final TextView title, location, time;
         final androidx.appcompat.widget.AppCompatImageView shareButton, addReportButton;
+        MyUUID uuid = null;
 
         public EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,8 +61,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             shareButton = itemView.findViewById(R.id.shareButton);
             addReportButton = itemView.findViewById(R.id.addReportButton);
 
-            shareButton.setOnClickListener(v -> eventClickListener.onShareClick(this, getAbsoluteAdapterPosition()));
-            addReportButton.setOnClickListener(v -> eventClickListener.onReportClick(this, getAbsoluteAdapterPosition()));
+            shareButton.setOnClickListener(v -> eventClickListener.onShareClick(this, uuid));
+            addReportButton.setOnClickListener(v -> eventClickListener.onReportClick(this, uuid));
         }
     }
 }

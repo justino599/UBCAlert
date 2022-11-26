@@ -1,5 +1,6 @@
 package com.example.ubcalert;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
                     });
                     assert eventList != null;
                 } catch (Exception | AssertionError e) {
+                    e.printStackTrace();
                     loadDefaultData();
                 }
                 setAdapter();
@@ -95,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
                 setAdapter();
             }
         });
-
     }
 
     /** Loads in default events if the database has nothing in it **/
@@ -175,6 +176,13 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         Snackbar.make(findViewById(R.id.coordinatorLayout), message, Snackbar.LENGTH_LONG).show();
     }
 
+    private Event findEvent(MyUUID uuid) {
+        for (int i = 0; i < eventList.size(); i++)
+            if (eventList.get(i).getUuid().equals(uuid))
+                return eventList.get(i);
+        return null;
+    }
+
     /** Called when the "New Report" button is clicked **/
     public void newReport(View v) {
         makeSnackbar("New Report created");
@@ -186,12 +194,32 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     }
 
     @Override
-    public void onShareClick(EventAdapter.EventViewHolder holder, int position) {
-        makeSnackbar("Share button clicked on \"" + eventList.get(position).getTitle() + "\"");
+    public void onShareClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
+        Event event = findEvent(eventUUID);
+        makeSnackbar("Share button clicked on \"" + (event != null ? event.getTitle() : null) + "\"");
     }
 
     @Override
-    public void onReportClick(EventAdapter.EventViewHolder holder, int position) {
-        makeSnackbar("Report button clicked on \"" + eventList.get(position).getTitle() + "\"");
+    public void onReportClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
+        Event event = findEvent(eventUUID);
+        makeSnackbar("Report button clicked on \"" + (event != null ? event.getTitle() : null) + "\"");
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Report");
+        alert.setMessage("Is \"" + event.getTitle() + "\" is happening?");
+        alert.setPositiveButton("Yes", (dialog, which) -> {
+            event.upvote();
+            eventDataRef.setValue(eventList);
+            System.out.println(eventList);
+        });
+        alert.setNegativeButton("No", (dialog, which) -> {
+            event.downvote();
+            eventDataRef.setValue(eventList);
+            System.out.println(eventList);
+        });
+        alert.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
+        alert.show();
+
+
     }
 }
