@@ -175,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Called when the "New Report" button is clicked **/
     public void newReport(View v) {
         makeSnackbar("New Report created");
+        Intent intent=new Intent(this, NewEvent.class);
+
+
+        startActivity(intent);
+
     }
 
     /** Called when the "Open Map View" button is clicked **/
