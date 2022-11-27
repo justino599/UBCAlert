@@ -41,7 +41,7 @@ public class ExistingEvents extends AppCompatActivity implements ExistingEventCl
         newCategory = bundle.getString("Category");
 
         // Update RecyclerView
-        setAdapter();
+        setAdapter(bundle);
     }
 
     private void loadData() {
@@ -54,9 +54,14 @@ public class ExistingEvents extends AppCompatActivity implements ExistingEventCl
     }
 
     /** Set the adapter of the recyclerView **/
-    private void setAdapter() {
+    private void setAdapter(Bundle bundle) {
         ArrayList<Event> filtered = getFilteredEventList();
-
+        if (filtered.size() == 0) {
+            // Directly go the confirmation page
+            Intent intent = new Intent(this, ConfirmEvent.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ExistingEventAdapter eventAdapter = new ExistingEventAdapter(getApplicationContext(), filtered);
         eventAdapter.setEventClickListener(this);
@@ -90,8 +95,9 @@ public class ExistingEvents extends AppCompatActivity implements ExistingEventCl
         alert.setMessage("Is the event, \"" + event.getTitle() + "\" similar to your report?");
 
         alert.setPositiveButton("Yes", (dialog, which) -> {
-            // Go the confiramtion page
-            setAdapter();
+            // Go the go the the homepage
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
         alert.setNeutralButton("No", (dialog, which) -> dialog.dismiss());
         alert.show();
