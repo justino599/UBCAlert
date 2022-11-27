@@ -2,6 +2,7 @@ package com.example.ubcalert;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -70,6 +71,14 @@ public class Analytics extends AppCompatActivity implements AdapterView.OnItemSe
                 }
 
             }
+        });
+
+        findViewById(R.id.imageButton1).setOnClickListener(v -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Info");
+            alert.setMessage("These graphs show the number of events in a given day for a specified area. Choose an area and the graph type to view the graphical representation.");
+            alert.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+            alert.show();
         });
 
 //        backbutton.setOnClickListener(new View.OnClickListener() {
