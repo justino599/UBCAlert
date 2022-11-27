@@ -36,18 +36,6 @@
         app:layout_constraintVertical_bias="0.193" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="154dp"
-        android:layout_height="48dp"
-        android:text="CANCEL"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.105"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.9" />
-
-    <Button
         android:id="@+id/button2"
         android:layout_width="154dp"
         android:layout_height="48dp"
@@ -55,10 +43,22 @@
         android:text="START REPORT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.902"
+        app:layout_constraintHorizontal_bias="0.832"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.899" />
+        app:layout_constraintVertical_bias="0.89" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="154dp"
+        android:layout_height="48dp"
+        android:text="CANCEL"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.89" />
 
     <EditText
         android:id="@+id/edit2"
@@ -67,6 +67,7 @@
         android:background="@drawable/event_item_border"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="@string/DescHint"
         android:inputType="textMultiLine"
         android:padding="5px"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,6 +97,7 @@
         android:layout_height="50dp"
         android:background="@drawable/event_item_border"
         android:ems="10"
+        android:hint="@string/LocHint"
         android:inputType="textPersonName"
         android:padding="5px"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -110,6 +112,7 @@
         android:layout_width="210dp"
         android:layout_height="50dp"
         android:background="@drawable/event_item_border"
+        android:contentDescription="@string/TitleHint"
         android:padding="5px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,6 +155,7 @@
         android:layout_height="50dp"
         android:background="@drawable/event_item_border"
         android:ems="10"
+        android:hint="@string/TitleHint"
         android:inputType="textPersonName"
         android:padding="5px"
         app:layout_constraintBottom_toBottomOf="parent"

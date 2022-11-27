@@ -21,4 +21,7 @@
         <item>5 (Dangerous)</item>
     </string-array>
     <string name="title_activity_pins_map_view">PinsMapView</string>
+    <string name="TitleHint">Enter a descriptive title</string>
+    <string name="DescHint">Provide a detailed description</string>
+    <string name="LocHint">Enter the event\'s location</string>
 </resources>
