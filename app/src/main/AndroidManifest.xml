@@ -45,14 +45,6 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".My_Reports"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainActivity"
             android:exported="false">
             <meta-data

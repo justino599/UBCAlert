@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
             // Determine which item was clicked and open the corresponding activity
             if (item.getTitle().equals("My Reports")) {
                 makeSnackbar("My Reports");
-                Intent intentional2 = new Intent(MainActivity.this,My_Reports.class);
+                Intent intentional2 = new Intent(MainActivity.this,MyReports.class);
                 intentional2.putExtra("theusername", this.username);
                 startActivity(intentional2);
             } else if (item.getTitle().equals("Preferences")) {

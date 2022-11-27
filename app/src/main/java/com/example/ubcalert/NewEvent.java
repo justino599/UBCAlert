@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class NewEvent extends AppCompatActivity {
     Spinner spinner;
@@ -39,14 +40,27 @@ public class NewEvent extends AppCompatActivity {
     }
 
     public void onClickStart(View view) {
-        Intent intent = new Intent(this, ExistingEvents.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("Title", e1.getText().toString());
-        bundle.putString("Desc", e2.getText().toString());
-        bundle.putString("Location", e3.getText().toString());
-        bundle.putString("Category", spinner.getSelectedItem().toString().substring(0, 1));
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(!e1.getText().toString().matches("") && !e2.getText().toString().matches("") && !e3.getText().toString().matches("")) {
+            Intent intent = new Intent(this, ExistingEvents.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("Title", e1.getText().toString());
+            bundle.putString("Desc", e2.getText().toString());
+            bundle.putString("Location", e3.getText().toString());
+            bundle.putString("Category", spinner.getSelectedItem().toString().substring(0, 1));
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
+        else{
+            if(e1.getText().toString().matches("")){
+                Toast.makeText(this, "Please fill the Title ", Toast.LENGTH_LONG).show();
+            }
+            else if(e2.getText().toString().matches("")){
+                Toast.makeText(this, "Please fill the Description", Toast.LENGTH_LONG).show();
+            }
+            else if(e3.getText().toString().matches("")){
+                Toast.makeText(this, "Please fill the Location", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
 }
