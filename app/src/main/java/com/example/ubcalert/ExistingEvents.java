@@ -67,10 +67,10 @@ public class ExistingEvents extends AppCompatActivity implements ExistingEventCl
         ArrayList<Event> out = new ArrayList<>();
 
         for (Event event : eventList) {
-            String[] keywords = newTitle.split(" ");
+            String[] keywords = newTitle.toLowerCase(Locale.ROOT).split(" ");
             boolean isRelevant = false;
             for (String keyword : keywords) {
-                if (event.getTitle().contains(keyword)) {
+                if (event.getTitle().toLowerCase(Locale.ROOT).contains(keyword)) {
                     isRelevant = true;
                     break;
                 }

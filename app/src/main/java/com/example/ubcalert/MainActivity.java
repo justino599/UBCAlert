@@ -156,7 +156,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
             } else if (item.getTitle().equals("Preferences")) {
                 makeSnackbar("Preferences");
             } else if (item.getTitle().equals("Event Analytics")) {
+                Intent intentional3 = new Intent(MainActivity.this,Analytics.class);
                 makeSnackbar("Event Analytics");
+                startActivity(intentional3);
             }
         });
 
