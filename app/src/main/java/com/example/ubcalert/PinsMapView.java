@@ -3,6 +3,10 @@ package com.example.ubcalert;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -12,6 +16,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.example.ubcalert.databinding.ActivityPinsMapViewBinding;
 
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.ZoneOffset;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -20,6 +27,9 @@ public class PinsMapView extends FragmentActivity implements OnMapReadyCallback 
     private GoogleMap mMap;
     private ActivityPinsMapViewBinding binding;
     private ArrayList<Event> eventList;
+    private RadioGroup radioGroup;
+    private int filter = R.id.monthRadio;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +42,17 @@ public class PinsMapView extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        FragmentActivity f = this;
         eventList = (ArrayList<Event>) getIntent().getSerializableExtra("eventList");
+        radioGroup = findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                System.out.println(checkedId);
+                filter = checkedId;
+                loadMap();
+            }
+        });
     }
 
     /**
@@ -47,14 +66,31 @@ public class PinsMapView extends FragmentActivity implements OnMapReadyCallback 
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        loadMap();
+    }
+
+    private void loadMap() {
+        googleMap.clear();
         mMap = googleMap;
         LatLng kelowna = new LatLng(49.936038, -119.397);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kelowna,15));
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
+        System.out.println(eventList);
         for (Event event : eventList) {
-            LatLng pin = new LatLng(event.getLat(), event.getLng());
-            mMap.addMarker(new MarkerOptions().position(pin).title(event.getTitle() + " at " + event.getLocation()));
+            LocalDateTime now = LocalDateTime.now();
+            if ((filter == R.id.hourRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600) || (filter == R.id.todayRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24) || (filter == R.id.weekRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24 * 7) || (filter == R.id.monthRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24 * 30) || (filter == R.id.yearRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24 * 365)) {
+                LatLng pin = new LatLng(event.getLat(), event.getLng());
+                mMap.addMarker(new MarkerOptions().position(pin).title(event.getTitle() + " at " + event.getLocation()));
+            }
         }
+    }
+
+    public void goBack(View v) {
+        finish();
+    }
+
+    public void heatMap(View v) {
+
     }
 }

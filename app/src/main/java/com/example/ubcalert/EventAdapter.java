@@ -36,6 +36,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         holder.location.setText(String.format("Location: %s",event.getLocation()));
         holder.time.setText(String.format("Time: %s", DateTimeFormatter.ofPattern("hh:mm a EEE MMM dd, yyyy").format(event.timeCreatedGetter())));
         holder.uuid = eventList.get(position).getUuid();
+        holder.accuracy.setText("Accuracy\n" + (int) (100 * ((double) event.getNumUpvotes() / (event.getNumUpvotes() + event.getNumDownvotes()))) + "%");
 
     }
 
@@ -49,7 +50,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder {
-        final TextView title, location, time;
+        final TextView title, location, time, accuracy;
         final androidx.appcompat.widget.AppCompatImageView shareButton, addReportButton;
         MyUUID uuid = null;
 
@@ -60,6 +61,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             time = itemView.findViewById(R.id.eventTime);
             shareButton = itemView.findViewById(R.id.shareButton);
             addReportButton = itemView.findViewById(R.id.addReportButton);
+            accuracy = itemView.findViewById(R.id.upvoteCounter);
 
             shareButton.setOnClickListener(v -> eventClickListener.onShareClick(this, uuid));
             addReportButton.setOnClickListener(v -> eventClickListener.onReportClick(this, uuid));

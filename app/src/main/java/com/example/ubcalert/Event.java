@@ -12,7 +12,7 @@ public class Event implements Serializable {
     private String location;
     private String username;
     private double lat, lng;
-    private int numUpvotes, numDownvotes;
+    private int numUpvotes = 1, numDownvotes;
     private LocalDateTime timeCreated;
     private MyUUID uuid;
 

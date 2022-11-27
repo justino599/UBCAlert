@@ -191,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
 
     /** Called when the "Open Map View" button is clicked **/
     public void openMapView(View v) {
-        makeSnackbar("Map View opened");
         Intent intent = new Intent(this, PinsMapView.class);
         intent.putExtra("eventList", eventList);
         startActivity(intent);
@@ -200,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     @Override
     public void onShareClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
         Event event = findEvent(eventUUID);
-        makeSnackbar("Share button clicked on \"" + (event != null ? event.getTitle() : null) + "\"");
 
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -214,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     @Override
     public void onReportClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
         Event event = findEvent(eventUUID);
-        makeSnackbar("Report button clicked on \"" + (event != null ? event.getTitle() : null) + "\"");
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Report");
