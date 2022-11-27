@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import org.threeten.bp.LocalDateTime;
 
@@ -101,6 +102,13 @@ public class ExistingEvents extends AppCompatActivity implements ExistingEventCl
         });
         alert.setNeutralButton("No", (dialog, which) -> dialog.dismiss());
         alert.show();
+    }
+
+    public void onClickNoEvent(View view) {
+        Intent intent = new Intent(this, ConfirmEvent.class);
+        Bundle bundle = getIntent().getExtras();
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private Event findEvent(MyUUID uuid) {

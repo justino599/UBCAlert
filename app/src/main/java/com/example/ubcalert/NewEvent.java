@@ -47,6 +47,7 @@ public class NewEvent extends AppCompatActivity {
             bundle.putString("Desc", e2.getText().toString());
             bundle.putString("Location", e3.getText().toString());
             bundle.putString("Category", spinner.getSelectedItem().toString().substring(0, 1));
+            bundle.putString("Username", getIntent().getStringExtra("username"));
             intent.putExtras(bundle);
             startActivity(intent);
         }

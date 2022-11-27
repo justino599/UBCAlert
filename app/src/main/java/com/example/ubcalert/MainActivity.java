@@ -186,8 +186,7 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     public void newReport(View v) {
         makeSnackbar("New Report created");
         Intent intent=new Intent(this, NewEvent.class);
-
-
+        intent.putExtra("username", username);
         startActivity(intent);
 
     }

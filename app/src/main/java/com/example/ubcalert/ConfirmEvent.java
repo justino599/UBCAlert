@@ -8,9 +8,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import org.threeten.bp.LocalDateTime;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class ConfirmEvent extends AppCompatActivity {
+    private ArrayList<Event> eventList;
     EditText e1, e2, e3, e4;
-    private String newTitle, newDesc, newLocation, newCategory;
+    private String newTitle, newDesc, newLocation, newCategory, Username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,7 @@ public class ConfirmEvent extends AppCompatActivity {
         newDesc = bundle.getString("Desc");
         newLocation = bundle.getString("Location");
         newCategory = bundle.getString("Category");
+        Username = bundle.getString("Username");
 
         e1.setText(newTitle);
         e2.setText(newDesc);
@@ -45,5 +54,33 @@ public class ConfirmEvent extends AppCompatActivity {
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);
 
+    }
+    public void onClickEdit(View view){
+        Intent intent = new Intent(this, EditEvent.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("Title", e1.getText().toString());
+        bundle.putString("Desc", e2.getText().toString());
+        bundle.putString("Location", e3.getText().toString());
+        bundle.putString("Category", e4.getText().toString());
+        bundle.putString("Username", Username);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+    public void onClickConfirm(View view){
+        // Add the values to the array list
+        loadData();
+        Random random = new Random();
+        eventList.add(new Event(newTitle, newLocation, Username.equals("") ? Username : "Anonymous", newDesc, 49.939478 + 10*random.nextDouble(), -119.396524 + 10*random.nextDouble(), LocalDateTime.now()));
+        Intent intent=new Intent(this,MainActivity.class);
+        startActivity(intent);
+
+    }
+    private void loadData() {
+        try (ObjectInputStream in = new ObjectInputStream(openFileInput("eventList.dat"))) {
+            eventList = (ArrayList<Event>) in.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
