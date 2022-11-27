@@ -162,6 +162,7 @@
             android:id="@+id/button11"
             android:layout_width="96dp"
             android:layout_height="48dp"
+            android:onClick="onClickConfirm "
             android:text="Confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
