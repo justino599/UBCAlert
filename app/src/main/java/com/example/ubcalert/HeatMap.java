@@ -1,14 +1,14 @@
 package com.example.ubcalert;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.ubcalert.databinding.ActivityPinsMapViewBinding;
+import com.example.ubcalert.databinding.ActivityHeatMapBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -24,19 +24,20 @@ import org.threeten.bp.ZoneOffset;
 
 import java.util.ArrayList;
 
-public class PinsMapView extends FragmentActivity implements OnMapReadyCallback {
+public class HeatMap extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap googleMap;
-    private ActivityPinsMapViewBinding binding;
+    private GoogleMap mMap;
+    private ActivityHeatMapBinding binding;
     private ArrayList<Event> eventList;
     private RadioGroup radioGroup;
     private int filter = R.id.monthRadio;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityPinsMapViewBinding.inflate(getLayoutInflater());
+        binding = ActivityHeatMapBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -78,19 +79,31 @@ public class PinsMapView extends FragmentActivity implements OnMapReadyCallback 
 
     private void loadMap() {
         googleMap.clear();
+        mMap = googleMap;
         LatLng kelowna = new LatLng(49.936038, -119.397);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kelowna,15));
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        System.out.println(eventList);
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(kelowna,15));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        ArrayList<LatLng> latLngs = new ArrayList<>();
         for (Event event : eventList) {
             LocalDateTime now = LocalDateTime.now();
             if ((filter == R.id.hourRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600) || (filter == R.id.todayRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24) || (filter == R.id.weekRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24 * 7) || (filter == R.id.monthRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24 * 30) || (filter == R.id.yearRadio && Math.abs(now.toEpochSecond(ZoneOffset.UTC) - event.timeCreatedGetter().toEpochSecond(ZoneOffset.UTC)) < 3600 * 24 * 365)) {
                 LatLng pin = new LatLng(event.getLat(), event.getLng());
-                googleMap.addMarker(new MarkerOptions().position(pin).title(event.getTitle() + " at " + event.getLocation()));
-
+                mMap.addMarker(new MarkerOptions().position(pin).title(event.getTitle() + " at " + event.getLocation()));
+                latLngs.add(pin);
             }
         }
+
+        if (latLngs.size() > 0) {
+            HeatmapTileProvider provider = new HeatmapTileProvider.Builder()
+                    .data(latLngs)
+                    .radius(50)
+                    .opacity(0.5)
+                    .build();
+            provider.setRadius(500);
+            // Add a tile overlay to the map, using the heat map tile provider.
+            TileOverlay overlay = googleMap.addTileOverlay(new TileOverlayOptions().tileProvider(provider));
+        } else
+            Toast.makeText(this, "No pins to create a heatmap with", Toast.LENGTH_LONG).show();
     }
 
     public void goBack(View v) {
@@ -98,8 +111,6 @@ public class PinsMapView extends FragmentActivity implements OnMapReadyCallback 
     }
 
     public void heatMap(View v) {
-        Intent intent = new Intent(this, HeatMap.class);
-        intent.putExtra("eventList", eventList);
-        startActivity(intent);
+
     }
 }

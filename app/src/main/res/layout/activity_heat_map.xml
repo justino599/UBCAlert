@@ -21,9 +21,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Map View"
+                android:text="Heat Map"
                 android:textSize="24sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/imageButton1"
@@ -46,7 +46,7 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MapActivity" />
+                tools:context=".MapsActivity" />
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +103,6 @@
                     android:text="This Year" />
 
             </RadioGroup>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -116,13 +115,6 @@
                     android:onClick="goBack"
                     android:text="Go Back" />
 
-                <Button
-                    android:id="@+id/heatmap"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="heatMap"
-                    android:text="View Heatmap" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
