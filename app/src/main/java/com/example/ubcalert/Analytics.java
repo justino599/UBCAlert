@@ -24,8 +24,6 @@ public class Analytics extends AppCompatActivity implements AdapterView.OnItemSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analytics);
 
-//        ImageButton backbutton = (ImageButton) findViewById(R.id.imageButton);
-
         s1 = (Spinner) findViewById(R.id.planets_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.location_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
