@@ -2,6 +2,7 @@ package com.example.ubcalert;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -27,7 +28,11 @@ import com.skydoves.powermenu.PowerMenuItem;
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -45,7 +50,31 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
         username = intent.getStringExtra("theusername");
+        String file = "username.txt";
 
+        if (username == null) {
+            // This means that the back button is pressed. Read the username from the file
+            try {
+                FileInputStream fis = openFileInput(file);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                username = br.readLine();
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Save the username in a file.
+            FileOutputStream outputStream;
+            try {
+                outputStream = openFileOutput(file, Context.MODE_PRIVATE);
+                outputStream.write(username.getBytes());    //FileOutputStream is meant for writing streams of raw bytes.
+                outputStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         // Get views
         Button reportButton = findViewById(R.id.reportButton);
         Button openMapButton = findViewById(R.id.openMapButton);
@@ -78,21 +107,25 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         setAdapter();
     }
 
-    /** Loads in default events if the database has nothing in it **/
+    /**
+     * Loads in default events if the database has nothing in it
+     **/
     private void loadDefaultData() {
         eventList = new ArrayList<>();
         eventList.add(new Event("Tim's is closed", "Tims", "admin", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
         eventList.add(new Event("Tim's out of BLT", "Tims", "admin", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
         eventList.add(new Event("Food truck", "UNC", "dale", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
-        eventList.add(new Event("Car break in", "Academy","tate", "Default Event", 49.933968, -119.401920, LocalDateTime.now()));
-        eventList.add(new Event("Commons main door", "Commons","alex", "Default Event", 49.93956349839961, -119.3955305101444, LocalDateTime.now()));
-        eventList.add(new Event("SUO Free goodies", "UNC","SUO", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
-        eventList.add(new Event("AGM is happening", "UBC theatre","SUO", "Default Event", 49.93904199035473, -119.39569629642908, LocalDateTime.now()));
+        eventList.add(new Event("Car break in", "Academy", "tate", "Default Event", 49.933968, -119.401920, LocalDateTime.now()));
+        eventList.add(new Event("Commons main door", "Commons", "alex", "Default Event", 49.93956349839961, -119.3955305101444, LocalDateTime.now()));
+        eventList.add(new Event("SUO Free goodies", "UNC", "SUO", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
+        eventList.add(new Event("AGM is happening", "UBC theatre", "SUO", "Default Event", 49.93904199035473, -119.39569629642908, LocalDateTime.now()));
         saveData();
-        Log.i("LOADED DEFAULT DATA","LOADED DEFAULT DATA");
+        Log.i("LOADED DEFAULT DATA", "LOADED DEFAULT DATA");
     }
 
-    /** Set the adapter of the recyclerView **/
+    /**
+     * Set the adapter of the recyclerView
+     **/
     private void setAdapter() {
         ArrayList<Event> filtered = getFilteredEventList();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -131,8 +164,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         return out;
     }
 
-    /** Called when the hamburger menu is clicked
-     *  How to use PowerMenu: https://github.com/skydoves/PowerMenu#usage
+    /**
+     * Called when the hamburger menu is clicked
+     * How to use PowerMenu: https://github.com/skydoves/PowerMenu#usage
      **/
     public void openMenu(View v) {
         PowerMenu powerMenu = new PowerMenu.Builder(this)
@@ -157,13 +191,13 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
             // Determine which item was clicked and open the corresponding activity
             if (item.getTitle().equals("My Reports")) {
                 makeSnackbar("My Reports");
-                Intent intentional2 = new Intent(MainActivity.this,MyReports.class);
+                Intent intentional2 = new Intent(MainActivity.this, MyReports.class);
                 intentional2.putExtra("theusername", this.username);
                 startActivity(intentional2);
             } else if (item.getTitle().equals("Preferences")) {
                 makeSnackbar("Preferences");
             } else if (item.getTitle().equals("Event Analytics")) {
-                Intent intentional3 = new Intent(MainActivity.this,Analytics.class);
+                Intent intentional3 = new Intent(MainActivity.this, Analytics.class);
                 makeSnackbar("Event Analytics");
                 startActivity(intentional3);
             }
@@ -172,7 +206,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         powerMenu.showAsDropDown(v);
     }
 
-    /** Used for creating an in-app notification. Use instead of {@link android.widget.Toast#makeText(android.content.Context, CharSequence, int) Toast.makeText()}.
+    /**
+     * Used for creating an in-app notification. Use instead of {@link android.widget.Toast#makeText(android.content.Context, CharSequence, int) Toast.makeText()}.
+     *
      * @param message The message to display in the notification
      */
     private void makeSnackbar(String message) {
@@ -186,16 +222,20 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         return null;
     }
 
-    /** Called when the "New Report" button is clicked **/
+    /**
+     * Called when the "New Report" button is clicked
+     **/
     public void newReport(View v) {
         makeSnackbar("New Report created");
-        Intent intent=new Intent(this, NewEvent.class);
+        Intent intent = new Intent(this, NewEvent.class);
         intent.putExtra("username", username);
         startActivity(intent);
 
     }
 
-    /** Called when the "Open Map View" button is clicked **/
+    /**
+     * Called when the "Open Map View" button is clicked
+     **/
     public void openMapView(View v) {
         Intent intent = new Intent(this, PinsMapView.class);
         intent.putExtra("eventList", eventList);
