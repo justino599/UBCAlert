@@ -14,9 +14,9 @@
         <item>Histogram</item>
     </string-array>
     <string-array name="cat">
-        <item>1 (FUN EVENT) </item>
+        <item>1 (Fun Event) </item>
         <item>2</item>
-        <item>3</item>
+        <item>3 (Neutral)</item>
         <item>4</item>
         <item>5 (Dangerous)</item>
     </string-array>
