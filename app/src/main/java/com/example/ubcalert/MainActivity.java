@@ -218,11 +218,13 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         alert.setMessage("Is \"" + event.getTitle() + "\" is happening?");
         alert.setPositiveButton("Yes", (dialog, which) -> {
             event.upvote();
+            makeSnackbar("\"" + event.getTitle() + "\" upvoted");
             saveData();
             setAdapter();
         });
         alert.setNegativeButton("No", (dialog, which) -> {
             event.downvote();
+            makeSnackbar("\"" + event.getTitle() + "\" downvoted");
             saveData();
             setAdapter();
         });
