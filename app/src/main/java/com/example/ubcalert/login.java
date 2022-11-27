@@ -24,6 +24,8 @@ public class login extends AppCompatActivity {
         buttonbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 useruser = etuno.getText().toString();
+                if (useruser.equals(""))
+                    useruser = "Anonymous";
                 Intent intentional = new Intent(login.this,MainActivity.class);
                 intentional.putExtra("theusername", useruser);
                 startActivity(intentional);

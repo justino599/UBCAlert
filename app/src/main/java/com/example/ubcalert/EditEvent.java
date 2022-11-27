@@ -19,14 +19,15 @@ public class EditEvent extends AppCompatActivity {
     private String newDesc;
     private String newLocation;
     private String newCategory;
+    private String Username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
-        e1=(EditText) findViewById(R.id.edit1);
-        e2=(EditText) findViewById(R.id.edit2);
-        e3=(EditText) findViewById(R.id.edit3);
+        e1 = (EditText) findViewById(R.id.edit1);
+        e2 = (EditText) findViewById(R.id.edit2);
+        e3 = (EditText) findViewById(R.id.edit3);
         s = (Spinner) findViewById(R.id.spinner2);
         // Create an ArrayAdapter using the string array and a default
         // spinner layout
@@ -43,6 +44,7 @@ public class EditEvent extends AppCompatActivity {
         newDesc = bundle.getString("Desc");
         newLocation = bundle.getString("Location");
         newCategory = bundle.getString("Category");
+        Username = bundle.getString("Username");
 
         e1.setText(newTitle);
         e2.setText(newDesc);
@@ -57,33 +59,30 @@ public class EditEvent extends AppCompatActivity {
         }
 
 
-
     }
-    public void onClickCancel(View view){
-       finish();
+
+    public void onClickCancel(View view) {
+        finish();
     }
-    public void onClickConfirm (View view){
 
+    public void onClickConfirm(View view) {
 
-
-        if(!e1.getText().toString().matches("") && !e2.getText().toString().matches("") && !e3.getText().toString().matches("")) {
+        if (!e1.getText().toString().matches("") && !e2.getText().toString().matches("") && !e3.getText().toString().matches("")) {
             Intent intent = new Intent(this, ConfirmEvent.class);
             Bundle bundle = new Bundle();
             bundle.putString("Title", e1.getText().toString());
             bundle.putString("Desc", e2.getText().toString());
             bundle.putString("Location", e3.getText().toString());
             bundle.putString("Category", s.getSelectedItem().toString().substring(0, 1));
+            bundle.putString("Username", Username);
             intent.putExtras(bundle);
             startActivity(intent);
-        }
-        else{
-            if(e1.getText().toString().matches("")){
+        } else {
+            if (e1.getText().toString().matches("")) {
                 Toast.makeText(this, "Please fill the Title ", Toast.LENGTH_LONG).show();
-            }
-            else if(e2.getText().toString().matches("")){
+            } else if (e2.getText().toString().matches("")) {
                 Toast.makeText(this, "Please fill the Description", Toast.LENGTH_LONG).show();
-            }
-            else if(e3.getText().toString().matches("")){
+            } else if (e3.getText().toString().matches("")) {
                 Toast.makeText(this, "Please fill the Location", Toast.LENGTH_LONG).show();
             }
         }

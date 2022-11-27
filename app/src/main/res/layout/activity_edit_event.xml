@@ -11,8 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".NewEvent"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="-175dp">
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="-141dp">
 
         <Spinner
             android:id="@+id/spinner2"
@@ -20,7 +20,7 @@
             android:layout_height="50dp"
             android:background="@drawable/event_item_border"
             android:contentDescription="@string/TitleHint"
-            android:padding="5px"
+            android:paddingStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.875"
@@ -65,7 +65,7 @@
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:paddingStart="5px"
+            android:paddingStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.875"
@@ -94,7 +94,7 @@
             android:background="@drawable/event_item_border"
             android:ems="10"
             android:inputType="textPersonName"
-            android:paddingStart="5px"
+            android:paddingStart="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.875"
@@ -162,7 +162,7 @@
             android:id="@+id/button11"
             android:layout_width="96dp"
             android:layout_height="48dp"
-            android:onClick="onClickConfirm "
+            android:onClick="onClickConfirm"
             android:text="Confirm"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

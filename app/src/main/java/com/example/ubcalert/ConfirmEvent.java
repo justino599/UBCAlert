@@ -4,14 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.service.autofill.SavedDatasetsInfo;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.LocalDateTime;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -71,10 +76,19 @@ public class ConfirmEvent extends AppCompatActivity {
         // Add the values to the array list
         loadData();
         Random random = new Random();
-        eventList.add(new Event(newTitle, newLocation, Username.equals("") ? Username : "Anonymous", newDesc, 49.939478 + 10*random.nextDouble(), -119.396524 + 10*random.nextDouble(), LocalDateTime.now()));
+        eventList.add(new Event(newTitle, newLocation, Username, newDesc, 49.939478 + 10*random.nextDouble(), -119.396524 + 10*random.nextDouble(), LocalDateTime.now()));
+        saveData();
+        Toast.makeText(this, "Event Added.", Toast.LENGTH_LONG).show();
         Intent intent=new Intent(this,MainActivity.class);
         startActivity(intent);
 
+    }
+    private void saveData() {
+        try (ObjectOutputStream out = new ObjectOutputStream(openFileOutput("eventList.dat", MODE_PRIVATE))) {
+            out.writeObject(eventList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     private void loadData() {
         try (ObjectInputStream in = new ObjectInputStream(openFileInput("eventList.dat"))) {
