@@ -81,11 +81,12 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Loads in default events if the database has nothing in it **/
     private void loadDefaultData() {
         eventList = new ArrayList<>();
-        eventList.add(new Event("Tims is closed", "Tims", "admin", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
+        eventList.add(new Event("Tim's is closed", "Tims", "admin", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
+        eventList.add(new Event("Tim's out of BLT", "Tims", "admin", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
         eventList.add(new Event("Food truck", "UNC", "dale", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
         eventList.add(new Event("Car break in", "Academy","tate", "Default Event", 49.933968, -119.401920, LocalDateTime.now()));
-        eventList.add(new Event("Commons main door is not operational", "Commons","alex", "Default Event", 49.93956349839961, -119.3955305101444, LocalDateTime.now()));
-        eventList.add(new Event("SUO giving out free goodies", "UNC","SUO", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
+        eventList.add(new Event("Commons main door", "Commons","alex", "Default Event", 49.93956349839961, -119.3955305101444, LocalDateTime.now()));
+        eventList.add(new Event("SUO Free goodies", "UNC","SUO", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
         eventList.add(new Event("AGM is happening", "UBC theatre","SUO", "Default Event", 49.93904199035473, -119.39569629642908, LocalDateTime.now()));
         saveData();
         Log.i("LOADED DEFAULT DATA","LOADED DEFAULT DATA");
