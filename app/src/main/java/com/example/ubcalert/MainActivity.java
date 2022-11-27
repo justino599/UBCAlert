@@ -217,14 +217,48 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
         alert.setTitle("Report");
         alert.setMessage("Is \"" + event.getTitle() + "\" is happening?");
         alert.setPositiveButton("Yes", (dialog, which) -> {
-            event.upvote();
-            makeSnackbar("\"" + event.getTitle() + "\" upvoted");
+            int hist = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                hist = event.upvoteTracking.getOrDefault(username, 0);
+            }
+            if (hist == 0) {
+                event.upvote();
+                makeSnackbar("\"" + event.getTitle() + "\" upvoted");
+                event.upvoteTracking.put(username, 1);
+            } else if (hist == 1) {
+                makeSnackbar("You have already upvoted this. Upvote removed");
+                event.upvoteTracking.put(username, 0);
+                event.setNumUpvotes(event.getNumUpvotes() - 1);
+            } else if (hist == -1) {
+                event.upvoteTracking.put(username, 1);
+                event.upvote();
+                event.setNumDownvotes(event.getNumDownvotes() - 1);
+
+
+                makeSnackbar("You have already downvoted this. Upvoted instead");
+            }
             saveData();
             setAdapter();
         });
         alert.setNegativeButton("No", (dialog, which) -> {
-            event.downvote();
-            makeSnackbar("\"" + event.getTitle() + "\" downvoted");
+            int hist = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                hist = event.upvoteTracking.getOrDefault(username, 0);
+            }
+            if (hist == 0) {
+                event.downvote();
+                makeSnackbar("\"" + event.getTitle() + "\" downvoted");
+                event.upvoteTracking.put(username, -1);
+            } else if (hist == -1) {
+                makeSnackbar("You have already downvoted this. Downvote removed");
+                event.upvoteTracking.put(username, 0);
+                event.setNumDownvotes(event.getNumDownvotes() - 1);
+            } else if (hist == 1) {
+                event.upvoteTracking.put(username, -1);
+                event.downvote();
+                event.setNumUpvotes(event.getNumUpvotes() - 1);
+                makeSnackbar("You have already upvoted this. Downvoted instead");
+            }
             saveData();
             setAdapter();
         });

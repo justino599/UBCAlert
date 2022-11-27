@@ -5,6 +5,8 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @SuppressWarnings("unused")
 public class Event implements Serializable {
@@ -15,6 +17,7 @@ public class Event implements Serializable {
     private int numUpvotes = 1, numDownvotes;
     private LocalDateTime timeCreated;
     private MyUUID uuid;
+    HashMap<String, Integer> upvoteTracking = new HashMap<>();
 
     // DO NOT DELETE. USED TO APPEASE THE FIREBASE OVERLORDS
     public Event() {}
