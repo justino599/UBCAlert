@@ -65,6 +65,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
             shareButton.setOnClickListener(v -> eventClickListener.onShareClick(this, uuid));
             addReportButton.setOnClickListener(v -> eventClickListener.onReportClick(this, uuid));
+            itemView.setOnClickListener(v -> eventClickListener.onEventClick(this, uuid));
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.example.ubcalert;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -23,6 +25,7 @@ import com.skydoves.powermenu.PowerMenu;
 import com.skydoves.powermenu.PowerMenuItem;
 
 import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -78,9 +81,9 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
     /** Loads in default events if the database has nothing in it **/
     private void loadDefaultData() {
         eventList = new ArrayList<>();
-        eventList.add(new Event("Tims is closed", "Tims", "jade", 49.939857, -119.395875, LocalDateTime.now()));
-        eventList.add(new Event("Food truck", "UNC", "jade", 49.940821, -119.395912, LocalDateTime.now()));
-        eventList.add(new Event("Car break in", "Academy","just", 49.933968, -119.401920, LocalDateTime.now()));
+        eventList.add(new Event("Tims is closed", "Tims", "jade", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
+        eventList.add(new Event("Food truck", "UNC", "jade", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
+        eventList.add(new Event("Car break in", "Academy","just", "Default Event", 49.933968, -119.401920, LocalDateTime.now()));
         saveData();
         Log.i("LOADED DEFAULT DATA","LOADED DEFAULT DATA");
     }
@@ -263,6 +266,17 @@ public class MainActivity extends AppCompatActivity implements EventClickListene
             setAdapter();
         });
         alert.setNeutralButton("Cancel", (dialog, which) -> dialog.dismiss());
+        alert.show();
+    }
+
+    @Override
+    public void onEventClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
+        Event event = findEvent(eventUUID);
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(event.getTitle());
+        alert.setMessage("Location: " + event.getLocation() + "\nTime: " + DateTimeFormatter.ofPattern("hh:mm a EEE MMM dd, yyyy").format(event.timeCreatedGetter()) + "\nDescription: " + event.getDesc());
+        alert.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
         alert.show();
     }
 }
