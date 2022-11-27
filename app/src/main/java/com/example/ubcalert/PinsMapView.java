@@ -1,12 +1,16 @@
 package com.example.ubcalert;
 
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.FragmentActivity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +22,7 @@ import com.example.ubcalert.databinding.ActivityPinsMapViewBinding;
 
 import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -45,13 +50,18 @@ public class PinsMapView extends FragmentActivity implements OnMapReadyCallback 
         FragmentActivity f = this;
         eventList = (ArrayList<Event>) getIntent().getSerializableExtra("eventList");
         radioGroup = findViewById(R.id.radioGroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                System.out.println(checkedId);
-                filter = checkedId;
-                loadMap();
-            }
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            System.out.println(checkedId);
+            filter = checkedId;
+            loadMap();
+        });
+
+        findViewById(R.id.imageButton1).setOnClickListener(v -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Info");
+            alert.setMessage("This map shows the location of all existing reports. Click on a pin for more information about that event. You can filter by time to only see more recent events.");
+            alert.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+            alert.show();
         });
     }
 
