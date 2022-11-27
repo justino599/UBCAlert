@@ -63,5 +63,11 @@ public class NewEvent extends AppCompatActivity {
             }
         }
     }
-
+    public void onClickCancel(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("theusername", getIntent().getStringExtra("username"));
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
 }
