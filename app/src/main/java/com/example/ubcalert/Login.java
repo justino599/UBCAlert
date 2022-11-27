@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class login extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     String useruser;
     EditText etuno;
@@ -26,7 +26,7 @@ public class login extends AppCompatActivity {
                 useruser = etuno.getText().toString();
                 if (useruser.equals(""))
                     useruser = "Anonymous";
-                Intent intentional = new Intent(login.this,MainActivity.class);
+                Intent intentional = new Intent(Login.this,MainActivity.class);
                 intentional.putExtra("theusername", useruser);
                 startActivity(intentional);
             }
