@@ -5,21 +5,25 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.ZoneOffset;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @SuppressWarnings("unused")
 public class Event implements Serializable {
     private String title;
     private String location;
     private String username;
+    private String desc;
     private double lat, lng;
     private int numUpvotes = 1, numDownvotes;
     private LocalDateTime timeCreated;
     private MyUUID uuid;
+    HashMap<String, Integer> upvoteTracking = new HashMap<>();
 
     // DO NOT DELETE. USED TO APPEASE THE FIREBASE OVERLORDS
     public Event() {}
 
-    public Event(String title, String location, String username, double lat, double lng, LocalDateTime localDateTime) {
+    public Event(String title, String location, String username, String desc, double lat, double lng, LocalDateTime localDateTime) {
         this.title = title;
         this.location = location;
         this.username = username;
@@ -27,7 +31,17 @@ public class Event implements Serializable {
         this.lng = lng;
         this.timeCreated = localDateTime;
         this.uuid = MyUUID.randomUUID();
+        this.desc = desc;
     }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     public String getUsername() {return username; }
 
     public void setUsername(String username) {this.username = username; }

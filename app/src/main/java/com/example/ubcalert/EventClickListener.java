@@ -12,4 +12,6 @@ public interface EventClickListener {
      * @param eventUUID The id of the event in the eventList
      */
     void onReportClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID);
+
+    void onEventClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID);
 }

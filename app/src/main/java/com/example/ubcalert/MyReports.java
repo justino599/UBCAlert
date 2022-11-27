@@ -58,9 +58,9 @@ public class MyReports extends AppCompatActivity implements EventClickListener {
 
     private void loadDefaultData() {
         eventList = new ArrayList<>();
-        eventList.add(new Event("Tims is closed", "Tims", "jade", 49.939857, -119.395875, LocalDateTime.now()));
-        eventList.add(new Event("Food truck", "UNC", "jade", 49.940821, -119.395912, LocalDateTime.now()));
-        eventList.add(new Event("Car break in", "Academy","shiv", 49.933968, -119.401920, LocalDateTime.now()));
+        eventList.add(new Event("Tims is closed", "Tims", "jade", "Default Event", 49.939857, -119.395875, LocalDateTime.now()));
+        eventList.add(new Event("Food truck", "UNC", "jade", "Default Event", 49.940821, -119.395912, LocalDateTime.now()));
+        eventList.add(new Event("Car break in", "Academy","shiv", "Default Event", 49.933968, -119.401920, LocalDateTime.now()));
         saveData();
         Log.i("LOADED DEFAULT DATA","LOADED DEFAULT DATA");
     }
@@ -88,6 +88,11 @@ public class MyReports extends AppCompatActivity implements EventClickListener {
 
     @Override
     public void onReportClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
+
+    }
+
+    @Override
+    public void onEventClick(EventAdapter.EventViewHolder holder, MyUUID eventUUID) {
 
     }
 }
